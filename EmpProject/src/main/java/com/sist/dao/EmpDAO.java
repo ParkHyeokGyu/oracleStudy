@@ -62,10 +62,37 @@ public class EmpDAO {
 				vo.setSal(rs.getInt(5));
 				list.add(vo);
 			}
+			rs.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			// 닫기
+			disConnection();
+		}
+		return list;
+	}
+	
+	// 뮤직 데이터 읽기
+	public ArrayList<MusicVO> musicListData(){
+		ArrayList<MusicVO> list=new ArrayList<MusicVO>();
+		try {
+			getConnection();
+			// rownum => ROW의 번호
+			String sql="SELECT title,poster "
+					 + "FROM genie_music "
+					 + "WHERE no BETWEEN 1 AND 20";
+			ps=conn.prepareStatement(sql);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()) {
+				MusicVO vo=new MusicVO();
+				vo.setTitle(rs.getString(1));
+				vo.setPoster(rs.getString(2));
+				list.add(vo);
+			}
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
 			disConnection();
 		}
 		return list;
